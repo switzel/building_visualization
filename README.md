@@ -16,7 +16,7 @@ Typical usage would be as follows:
 
 1. Compute the balls
   
-      gap building_embedding.g
+        gap building_embedding.g
   
     This produces four files `char0_chamber.simp`, `char0_vertex.simp`, `char2_chamber.simp`, `char2_vertex.simp`.
 
@@ -24,16 +24,16 @@ Typical usage would be as follows:
   
 2. Generate a trivial permutation file
   
-      python3 augment_embedding.py char0_vertex.simp --permutations_diff char0_vertex.simp char0_vertex.perm
+        python3 augment_embedding.py char0_vertex.simp --permutations_diff char0_vertex.simp char0_vertex.perm
   
-3. (Repeatedly) edit the file `char0_vertex.perm` to make the outcome look as instructive as possible.Then compute the visualization
+3. (Repeatedly) edit the file `char0_vertex.perm` to make the outcome look as instructive as possible. Then compute the visualization
   
-      python3 augment_embedding.py --transform --wavefront --permutations_patch char0_vertex.perm char0_vertex.simp char0_vertex.obj
-      python3 augment_embedding.py --transform --wavefront --permutations_patch char0_vertex.perm char0_vertex.simp char0_vertex.scad
+        python3 augment_embedding.py --transform --wavefront --permutations_patch char0_vertex.perm char0_vertex.simp char0_vertex.obj
+        python3 augment_embedding.py --transform --wavefront --permutations_patch char0_vertex.perm char0_vertex.simp char0_vertex.scad
   
     (Alternatively one could also directly edit the `COORDINATES` part of the `.simp` file and then optionally compute the corresponding permutation using
 
-      python3 augment_embedding.py char0_vertex_original.simp --permutations_diff char0_vertex_modified.simp char0_vertex.perm
+        python3 augment_embedding.py char0_vertex_original.simp --permutations_diff char0_vertex_modified.simp char0_vertex.perm
 
     .)
 4. Use [OpenSCAD](https://openscad.org/) to render the `.scad`-file to `.stl` or similar.
