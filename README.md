@@ -7,10 +7,10 @@ It consists of two parts:
 1. The GAP-code `building_embedding.g` computes balls in a building together with a retraction to $R^2$.
 2. The python code `augment_embedding.py` turns this into a map to R^3 by adding a third coordinate to each vertex position, depending on its position in the fiber (and the size of the fiber). It has a few extra functions:
 
-    * An optional linear transformation can be applied. This transformation turns the integer coordinates of the GAP-output into orthogonal coordinates and is active by default.
-    * A permutation as above can be applied.
-    * The output can be in the above file format, in wavefront obj, or as OpenSCAD code (based on Appenzeller's code).
-    * One of various z-height functions can be applied.
+    * An optional linear transformation can be applied with `--transform`. This transformation turns the integer coordinates of the GAP-output into orthogonal coordinates.
+    * A permutation as above can be computed with `--permutations_diff` and applied with `--permutations_patch`.
+    * The output can be in the above file format, in wavefront obj with `--wavefront`, or as OpenSCAD code with `--openscad` (based on Appenzeller's code).
+    * One of various z-height functions can be applied with `--zstrategy`.
 
 Typical usage would be as follows:
 
@@ -33,7 +33,7 @@ Typical usage would be as follows:
   
     (Alternatively one could also directly edit the `COORDINATES` part of the `.simp` file and then optionally compute the corresponding permutation using
 
-        python3 augment_embedding.py char0_vertex_original.simp --permutations_diff char0_vertex_modified.simp char0_vertex.perm
+        python3 augment_embedding.py char0_vertex_modified.simp --permutations_diff char0_vertex_original.simp char0_vertex.perm
 
     .)
 4. Use [OpenSCAD](https://openscad.org/) to render the `.scad`-file to `.stl` or similar.
