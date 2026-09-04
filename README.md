@@ -29,7 +29,7 @@ Typical usage would be as follows:
 3. (Repeatedly) edit the file `char0_vertex.perm` to make the outcome look as instructive as possible. Then compute the visualization
   
         python3 augment_embedding.py --transform --wavefront --permutations_patch char0_vertex.perm char0_vertex.simp char0_vertex.obj
-        python3 augment_embedding.py --transform --wavefront --permutations_patch char0_vertex.perm char0_vertex.simp char0_vertex.scad
+        python3 augment_embedding.py --transform --openscad --permutations_patch char0_vertex.perm char0_vertex.simp char0_vertex.scad
   
     (Alternatively one could also directly edit the `COORDINATES` part of the `.simp` file and then optionally compute the corresponding permutation using
 
