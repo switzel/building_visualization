@@ -38,6 +38,8 @@ Typical usage would be as follows:
     .)
 4. Use [OpenSCAD](https://openscad.org/) to render the `.scad`-file to `.stl` or similar.
 
+Files produced by Raphael Appenzeller via step 3 are provided as `charX_vertex_appenzeller.perm`.
+
 ## File format
 
 The interface between the two scripts is a primitive file format specifically suited for the task. It encodes simplicial complexes with (vertex) maps to R^k, where vertices mapped to the same point are provided as ordered lists: The format is of the form
