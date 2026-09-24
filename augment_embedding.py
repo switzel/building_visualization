@@ -24,6 +24,8 @@ def parse_simplices_file(path, check_multiple_coordinates = True):
                 d = int(d)
                 section = 'C'
                 continue
+            if line.startswith('#'):
+                continue
 
             if section == 'S':
                 simplices.append([int(v) for v in line.split()])
@@ -91,9 +93,10 @@ def write_wavefront_file(path, simplices, coordinates):
             f.write('f ' + ' '.join(str(int(v) + 1) for v in simplex) + '\n')
 
 openscad_header='''
-vertex_radius = .04;
-edge_radius = .03;
-triangle_thickness = .025;
+scale = 40;
+vertex_radius = 1.25/scale;
+edge_radius = 1.25/scale;
+triangle_thickness = 1/scale;
 fn = 20;
 
 function transpose(A) = [for (j = [0:len(A[0])-1]) [for(i = [0:len(A)-1]) A[i][j]]];
@@ -124,8 +127,6 @@ module edge(p, q){
     multmatrix(M)
     cylinder(h=L, r=edge_radius, $fn = fn);
 }
-module chamber_boundary() {linear_extrude(height = 3, center = true) polygon([[-1.5,0.8660254037844386],[-1.0, 1.7320508075688772], [1.0, 1.7320508075688772], [1.5,0.8660254037844386], [0.5, -0.8660254037844386], [-0.5, -0.8660254037844386]]);}
-module vertex_boundary() {linear_extrude(height = 3, center = true) polygon([[-2.0,0.0], [-1.0,1.7320508075688772], [1.0,1.7320508075688772],[2.0,0.0],[1.0,-1.7320508075688772],[-1.0,-1.7320508075688772]]);}
 '''
 
 def edges_of_simplices(simplices):
@@ -135,17 +136,16 @@ def write_openscad_file(path, simplices, coordinates):
     n = max(sum(simplices,[])) + 1
     with open(path,'w') as f:
         f.write(openscad_header)
-        f.write('module gadget() {\nunion() {')
         f.write('vertices = [\n' + ',\n'.join(f'{list(coordinates[i])}' for i in range(n)) + '];\n')
-        f.write('for (i=[0:len(vertices)-1]) { vertex(vertices[i]); }')
+        f.write('module skeleton() {\nunion() {\n')
+        f.write('for (i=[0:len(vertices)-1]) { vertex(vertices[i]); }\n')
         edges = edges_of_simplices(simplices)
         for edge in edges:
             f.write(f'edge(vertices[{edge[0]}], vertices[{edge[1]}]);\n')
+        f.write('}}\nmodule chambers() {\nunion() {\n')
         for simplex in simplices:
             f.write(f'triangle(vertices[{simplex[0]}], vertices[{simplex[1]}], vertices[{simplex[2]}]);\n')
-        f.write('}}\nscale(10) gadget();\n')
-        f.write('//scale(10) intersection() {gadget(); scale(1.015) chamber_boundary();}\n')
-        f.write('//scale(10) intersection() {translate([0,-0.8660254037844386*2/3,0]) gadget(); scale(1.02) translate([0,-0.8660254037844386*2/3,0]) chamber_boundary();}\n')
+        f.write('}}\nscale(scale) rotate([-90,0,0]) union(){\nskeleton();\nchambers();\n}\n')
 
 
 def write_permutations_file(path, fibers):
